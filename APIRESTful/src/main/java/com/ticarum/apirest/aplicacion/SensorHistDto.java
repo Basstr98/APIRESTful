@@ -2,9 +2,16 @@ package com.ticarum.apirest.aplicacion;
 
 import java.util.Set;
 
-import com.ticarum.rest.application.dtos.GrupoDetailDto;
 
 public class SensorHistDto extends SensorDto{
 
-	private Set<GrupoDetailDto> grupos;
+	private Set<HistoricoDto> historicos;
+
+	public Set<HistoricoDto> getHistoricos() {
+		return historicos;
+	}
+
+	public void setHistoricos(Set<HistoricoDto> historicos) {
+		this.historicos = historicos;
+	}
 }
