@@ -3,4 +3,11 @@
   <groupId>ticarum</groupId>
   <artifactId>APIRESTful</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.ticarum</groupId>
+  		<artifactId>RESTfull</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
