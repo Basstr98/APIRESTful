@@ -27,6 +27,9 @@ public class Sensor {
 	@Column(nullable=false,length=5)
 	private String magnitud;
 	
+	@Column(nullable=true)
+	private Double valor;
+	
 	@OneToMany(mappedBy="sensor",cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Historico> historicoValores;
 	
@@ -49,7 +52,12 @@ public class Sensor {
 		return tipo;
 	}
 	
+	public Double getValor() {
+		return valor;
+	}
 	
-	
+	public List<Historico> getHistoricoValores() {
+		return historicoValores;
+	}
 	
 }

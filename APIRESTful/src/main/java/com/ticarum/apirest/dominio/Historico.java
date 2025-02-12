@@ -23,7 +23,7 @@ public class Historico {
     private Sensor sensor;
 	
 	@Column(nullable = false)
-    private double valor;
+    private Double valor;
 	
 	@Column(nullable = false)
     private LocalDateTime fecha;
