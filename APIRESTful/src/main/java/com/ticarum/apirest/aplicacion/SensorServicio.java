@@ -139,4 +139,14 @@ public class SensorServicio implements com.ticarum.apirest.infraestructura.Senso
 		return sensor.getMedia();
 	}
 
+	@Override
+	public boolean existeSensor(Sensor sensor) {
+		return sensorRep.findAll().contains(sensor);
+	}
+
+	@Override
+	public TipoSensor getTipo(Sensor sensor) {
+		return sensor.getTipo();
+	}
+
 }

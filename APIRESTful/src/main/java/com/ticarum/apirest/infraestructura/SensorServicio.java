@@ -24,4 +24,6 @@ public interface SensorServicio {
 	public OptionalDouble calcularMedia(Sensor sensor, String fechaInicio, String fechaFin);
 	public Double getMedia(Sensor sensor);
 	public void eliminarSensor(Sensor sensor);
+	public boolean existeSensor(Sensor sensor);
+	public TipoSensor getTipo(Sensor sensor);
 }

@@ -1,5 +1,6 @@
 package com.ticarum.apirest.presentacion;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -10,16 +11,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticarum.apirest.infraestructura.SensorServicio;
+
+import jakarta.validation.Valid;
 
 import com.ticarum.apirest.aplicacion.HistoricoDto;
 import com.ticarum.apirest.aplicacion.SensorDto;
 import com.ticarum.apirest.aplicacion.SensorHistDto;
 import com.ticarum.apirest.dominio.Sensor;
+import com.ticarum.apirest.dominio.TipoSensor;
 import com.ticarum.apirest.excepciones.NoExisteEntidadException;
 import com.ticarum.apirest.excepciones.NoExisteHistoricoException;
+import com.ticarum.apirest.excepciones.TipoNoDefinidoException;
+import com.ticarum.apirest.excepciones.TipoRepetidoException;
 import com.ticarum.apirest.infraestructura.HistoricoServicio;
 @RestController
 public class Controlador {
@@ -96,5 +103,23 @@ public class Controlador {
 			sensorServicio.eliminarSensor(sensor);
 			return ResponseEntity.ok("El sensor " + sensor.getId() + " y sus históricos se han eliminado correctamente");
 		}).orElseThrow(() -> new NoExisteEntidadException("No existe el sensor con ID " + idSensor));
+	}
+	
+	@PostMapping(value="/sensores")
+	public SensorDto registrarSensores(@Valid SensorDto sensorDto) {	
+		@SuppressWarnings("unlikely-arg-type")
+		boolean tipoValido = Arrays.stream(TipoSensor.values())
+							.anyMatch(tipo -> tipo.name().equals(sensorDto.getTipo()));
+		
+		if (!tipoValido) throw new TipoNoDefinidoException("No puede añadir un sensor no definido entre los tipos: TEMPERATURA, HUMEDAD, PRESION, VELOCIDAD_VIENTO");
+		
+		if (sensorServicio.listar().isEmpty()) {
+			return sensorServicio.toDto(sensorServicio.registrar(sensorDto), SensorDto.class);
+		} else {
+			for (Sensor sensor: sensorServicio.listar()) {
+				if (sensor.getTipo().equals(sensorDto.getTipo())) throw new TipoRepetidoException("No puede añadir un sensor de Tipo " + sensorDto.getTipo() + ", ya existe uno igual");
+			}
+		}
+		return sensorServicio.toDto(sensorServicio.registrar(sensorDto), SensorDto.class);
 	}
 }
