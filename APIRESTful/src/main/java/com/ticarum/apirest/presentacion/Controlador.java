@@ -122,4 +122,4 @@ public class Controlador {
 		}
 		return sensorServicio.toDto(sensorServicio.registrar(sensorDto), SensorDto.class);
 	}
-}
+} 
