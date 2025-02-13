@@ -56,6 +56,10 @@ public class Sensor {
 		return valor;
 	}
 	
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+	
 	public List<Historico> getHistoricoValores() {
 		return historicoValores;
 	}

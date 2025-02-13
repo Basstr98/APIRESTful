@@ -3,51 +3,61 @@ package com.ticarum.apirest.aplicacion;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ticarum.apirest.dominio.Historico;
 import com.ticarum.apirest.dominio.Sensor;
 
+@Service
 public class HistoricoServicio implements com.ticarum.apirest.infraestructura.HistoricoServicio{
 
+	@Autowired
+	com.ticarum.apirest.infraestructura.HistoricoRepositorio histRep;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Override
 	public HistoricoDto toDto(Historico historico, Class<? extends HistoricoDto> c) {
-		// TODO Auto-generated method stub
-		return null;
+		HistoricoDto dto = modelMapper.map(historico, c);
+		return dto;
 	}
 
 	@Override
 	public Historico toEntidad(HistoricoDto historicoDto) {
-		// TODO Auto-generated method stub
-		return null;
+		Historico historico = modelMapper.map(historicoDto, Historico.class);
+		if (historico.getId() != null) {
+			return historico;
+		}
+	return null;
 	}
 
 	@Override
 	public Historico registrar(HistoricoDto historicoDto) {
-		// TODO Auto-generated method stub
-		return null;
+		Historico historico = histRep.save(toEntidad(historicoDto));
+		return historico;
 	}
 
 	@Override
 	public Optional<Historico> getHistorico(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return histRep.findById(id);
 	}
 
 	@Override
 	public Optional<Sensor> getSensor(Historico historico) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return Optional.ofNullable(historico.getSensor());
 	}
 
 	@Override
 	public LocalDateTime getFecha(Historico historico) {
-		// TODO Auto-generated method stub
-		return null;
+		return historico.getFecha();
 	}
 
 	@Override
 	public Double getValor(Historico historico) {
-		// TODO Auto-generated method stub
-		return null;
+		return historico.getValor();
 	}
 
 }
