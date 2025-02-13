@@ -1,6 +1,8 @@
 package com.ticarum.apirest.dominio;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,14 +28,17 @@ public class Historico {
     private Double valor;
 	
 	@Column(nullable = false)
-    private LocalDateTime fecha;
+    private String fecha;
 	
 	public Historico() {}
 	
 	public Historico(Sensor sensor, double valor) {
 		this.sensor = sensor;
 		this.valor = valor;
-		this.fecha = LocalDateTime.now();
+		
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		
+		this.fecha = LocalDateTime.now().format(formato);
 	}
 	
 	public Long getId() {
@@ -48,7 +53,7 @@ public class Historico {
 		return valor;
 	}
 	
-	public LocalDateTime getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 }

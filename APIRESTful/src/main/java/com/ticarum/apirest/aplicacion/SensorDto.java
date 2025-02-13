@@ -21,7 +21,10 @@ public class SensorDto {
 	@Size(max = 5, message = "Magnitud de sensor no valida: No pude tener mas de 5 caracteres de longitud")
 	private String magnitud;
 	
+	@NotBlank(message="Valor no valido: valor vacio")
 	private double valor;
+	
+	private double media;
 
 	public Long getId() {
 		return id;
@@ -53,6 +56,14 @@ public class SensorDto {
 	
 	public void setValor(double valor) {
 		this.valor = valor;
+	}
+	
+	public double getMedia() {
+		return media;
+	}
+	
+	public void setMedia(double media) {
+		this.media = media;
 	}
 }
 	

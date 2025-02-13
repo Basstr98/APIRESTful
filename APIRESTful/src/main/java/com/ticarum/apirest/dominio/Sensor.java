@@ -1,6 +1,7 @@
 package com.ticarum.apirest.dominio;
 
-import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,17 +28,21 @@ public class Sensor {
 	@Column(nullable=false,length=5)
 	private String magnitud;
 	
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private Double valor;
 	
+	@Column(nullable=false)
+	private Double media;
+	
 	@OneToMany(mappedBy="sensor",cascade=CascadeType.ALL, orphanRemoval = true)
-	private List<Historico> historicoValores;
+	private Set<Historico> historicoValores;
 	
 	public Sensor() {}
 	
-	public Sensor(TipoSensor tipo, String magnitud) {
+	public Sensor(TipoSensor tipo, String magnitud, double valor) {
 		this.tipo = tipo;
 		this.magnitud = magnitud;
+		this.valor = valor;
 	}
 	
 	public Long getId() {
@@ -60,8 +65,16 @@ public class Sensor {
 		this.valor = valor;
 	}
 	
-	public List<Historico> getHistoricoValores() {
+	public Set<Historico> getHistoricoValores() {
 		return historicoValores;
+	}
+	
+	public Double getMedia() {
+		return media;
+	}
+	
+	public void setMedia(Double media) {
+		this.media = media;
 	}
 	
 }

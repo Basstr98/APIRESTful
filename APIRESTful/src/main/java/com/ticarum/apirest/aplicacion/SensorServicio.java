@@ -1,9 +1,11 @@
 package com.ticarum.apirest.aplicacion;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ticarum.apirest.dominio.Historico;
 import com.ticarum.apirest.dominio.Sensor;
 import com.ticarum.apirest.dominio.TipoSensor;
+import com.ticarum.apirest.excepciones.TipoNoDefinidoException;
 
 @Service
 public class SensorServicio implements com.ticarum.apirest.infraestructura.SensorServicio{
@@ -82,12 +85,19 @@ public class SensorServicio implements com.ticarum.apirest.infraestructura.Senso
 	}
 
 	@Override
-	public OptionalDouble getMedia(Sensor sensor, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+	public OptionalDouble calcularMedia(Sensor sensor, String fechaInicio, String fechaFin) {
+		
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		
+		LocalDateTime fechaI = LocalDateTime.parse(fechaInicio,formato);
+		LocalDateTime fechaF = LocalDateTime.parse(fechaFin,formato);
+		
 		OptionalDouble media = sensor.getHistoricoValores().stream()
-				.filter(h -> !h.getFecha().isBefore(fechaInicio) && !h.getFecha().isAfter(fechaFin))
+				.filter(h -> !LocalDateTime.parse(h.getFecha()).isBefore(fechaI) && !LocalDateTime.parse(h.getFecha()).isAfter(fechaF))
 				.mapToDouble(Historico::getValor)
 				.average(); 
 		if (media.isPresent()) {
+			sensor.setMedia(media.getAsDouble());
 			return media;
 		}
 		return null;
@@ -97,6 +107,36 @@ public class SensorServicio implements com.ticarum.apirest.infraestructura.Senso
 	public void eliminarSensor(Sensor sensor) {
 		sensorRep.delete(sensor);
 		
+	}
+
+	@Override
+	public Double generarValor(Sensor sensor) {
+		Random random = new Random();
+		
+		double valorNuevo = 0;
+		switch (sensor.getTipo()) {
+        case TEMPERATURA: 
+        	valorNuevo = 0 + (30 - 0) * random.nextDouble();
+        	break;
+        case HUMEDAD:
+        	valorNuevo = 0 + (100 - 0) * random.nextDouble();
+        	break;
+        case PRESION:
+        	valorNuevo = 899 + (1013 - 899) * random.nextDouble();
+        break;
+        case VELOCIDAD_VIENTO:
+        	valorNuevo = 0 + (15 - 0) * random.nextDouble();
+        	break;
+        default: 
+        	throw new TipoNoDefinidoException("El tipo de Sensor no está permitido");
+    };
+    
+    return valorNuevo;  // 
+	}
+
+	@Override
+	public Double getMedia(Sensor sensor) {
+		return sensor.getMedia();
 	}
 
 }

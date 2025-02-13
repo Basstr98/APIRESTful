@@ -1,6 +1,5 @@
 package com.ticarum.apirest.aplicacion;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -51,13 +50,18 @@ public class HistoricoServicio implements com.ticarum.apirest.infraestructura.Hi
 	}
 
 	@Override
-	public LocalDateTime getFecha(Historico historico) {
+	public String getFecha(Historico historico) {
 		return historico.getFecha();
 	}
 
 	@Override
 	public Double getValor(Historico historico) {
 		return historico.getValor();
+	}
+
+	@Override
+	public void eliminarHistorico(Historico historico) {
+		histRep.delete(historico);
 	}
 
 }

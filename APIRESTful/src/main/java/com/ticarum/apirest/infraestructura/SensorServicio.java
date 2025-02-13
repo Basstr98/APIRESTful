@@ -1,6 +1,5 @@
 package com.ticarum.apirest.infraestructura;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -21,6 +20,8 @@ public interface SensorServicio {
 	public Historico registrarHistorico(Sensor sensor);
 	public boolean tieneHistorico(Sensor sensor);
 	public Double getValor(Sensor sensor);
-	public OptionalDouble getMedia(Sensor sensor, LocalDateTime fechaInicio, LocalDateTime fechaFin);
+	public Double generarValor(Sensor sensor);
+	public OptionalDouble calcularMedia(Sensor sensor, String fechaInicio, String fechaFin);
+	public Double getMedia(Sensor sensor);
 	public void eliminarSensor(Sensor sensor);
 }
