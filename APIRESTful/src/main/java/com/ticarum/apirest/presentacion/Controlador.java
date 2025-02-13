@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticarum.apirest.infraestructura.SensorServicio;
-import com.ticarum.rest.application.dtos.AlumnoDetailDto;
 import com.ticarum.rest.application.exceptions.EntidadNoExisteException;
 import com.ticarum.apirest.aplicacion.SensorDto;
 import com.ticarum.apirest.aplicacion.SensorHistDto;
